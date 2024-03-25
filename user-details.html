@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <p>hello</p>
+    <script>
+      //   console.log(localStorage.getItem("sessions"));
+      let users = JSON.parse(localStorage.getItem("info"));
+      console.log(users);
+      for (const user of users) {
+        console.log(user);
+        let div = document.createElement("div");
+        div.innerText = JSON.stringify(user);
+        document.body.appendChild(div);
+      }
+    </script>
+
+    <!-- <script src="script.js"></script> -->
+  </body>
+</html>
