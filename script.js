@@ -1,27 +1,33 @@
 const contentElement = document.querySelector('.content')
-const userElement = document.querySelector('.user')
-const userDetailsLinkElement = document.querySelector('.userDetailsLink')
-const userDetailsBtn = document.querySelector('.userDetails-btn')
+const url = 'https://jsonplaceholder.typicode.com/users'
 
-
-fetch('https://jsonplaceholder.typicode.com/users')
+fetch(url)
 .then((response) => response.json())
 .then((users) => {
-    // contentElement.innerHTML=''
-    userElement.innerHTML=''
+    displayEach(users)
+})
+
+function displayEach(users) {
+    contentElement.innerHTML = ''
     for (const user of users) {
-        console.log(users);
-        userElement.innerHTML += `<div> user id: ${user.id}, user name: ${user.name} </div>`
-        userDetailsLinkElement.id = `${user.id}`
-        console.log(userDetailsLinkElement.id);
-        userElement.appendChild(userDetailsLinkElement)
-         
+        let userElement = document.createElement('div')
+        userElement.classList.add('userElement')
+        userElement.innerHTML += `<div> User ID: ${user.id}, User Name: ${user.name} </div>`
+
+        let button = document.createElement('button')
+        button.innerText = 'User Details'
+        button.classList.add('userDetails-btn')
+        button.id = `${user.id}`
+        userElement.appendChild(button)
+
+        button.addEventListener('click', () => {
+            location.href = 'user-details.html'
+            localStorage.setItem('user-id', button.id);
+        })
+
+        contentElement.append(userElement)
     }
-})
+}
 
-userDetailsLinkElement.addEventListener('click', () => {
-    let userID = userDetailsLinkElement.id
-    console.log(userID);
 
-})
 
