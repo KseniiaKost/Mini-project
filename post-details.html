@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post-Details</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <style>
+      body {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    </style>
+    <script>
+      let postId = localStorage.getItem("post-id");
+      let userId = localStorage.getItem("user-id");
+
+      let userPostsUrl = `https://jsonplaceholder.typicode.com/users/${userId}/posts`;
+      let particularPost = `https://jsonplaceholder.typicode.com/posts/${postId}`;
+      let postComents = `https://jsonplaceholder.typicode.com/posts/${postId}/comments`;
+
+      fetch(particularPost)
+        .then((response) => response.json())
+        .then((user) => {
+          displayInfo(user);
+        });
+
+      function displayInfo(post) {
+        let userContainer = document.createElement("div");
+        userContainer.classList.add("postDetails-wraper");
+        let str = JSON.stringify(post);
+        let output = str.replaceAll(/[!"{}\[\]]/g, "").split(",");
+
+        userContainer.innerHTML = "";
+        for (const property of output) {
+          userContainer.innerHTML += `<p> ${property} </p>`;
+        }
+
+        let button = document.createElement("button");
+        button.innerText = "Comments";
+        button.classList.add("comments-btn");
+
+        userContainer.appendChild(button);
+
+        button.addEventListener("click", () => {
+          displayComments(postComents);
+        });
+
+        document.body.appendChild(userContainer);
+      }
+
+      function displayComments(commentURL) {
+        fetch(commentURL)
+          .then((resp) => resp.json())
+          .then((comments) => {
+            let ul = document.createElement("ul");
+            ul.classList.add("post-comments");
+            ul.innerHTML = "";
+
+            for (const comment of comments) {
+              let li = document.createElement("li");
+              li.innerText += ` Post Id: ${comment.postId} - Comment:  ${comment.body} `;
+              ul.appendChild(li);
+            }
+
+            document.body.appendChild(ul);
+          });
+      }
+    </script>
+  </body>
+</html>
