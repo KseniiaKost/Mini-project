@@ -3,15 +3,94 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>User-Details</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <p>hello</p>
+    <style>
+      body {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    </style>
     <script>
+      let userId = localStorage.getItem("user-id");
+      let userUrl = "https://jsonplaceholder.typicode.com/users" + `/${userId}`;
+      let userPostsUrl = `https://jsonplaceholder.typicode.com/users/${userId}/posts`;
 
+      fetch(userUrl)
+        .then((response) => response.json())
+        .then((user) => {
+          displayInfo(user);
+        });
+
+      function displayInfo(user) {
+        let userContainer = document.createElement("div");
+        userContainer.classList.add("userContainer");
+        let str = JSON.stringify(user);
+        let output = str.replaceAll(/[!"{}]/g, "").split(",");
+
+        userContainer.innerHTML = "";
+        let ul = document.createElement("ul");
+        ul.classList.add("userInfo");
+        for (const property of output) {
+          let li = document.createElement("li");
+          li.innerText += `${property} `;
+
+          ul.appendChild(li);
+        }
+        userContainer.appendChild(ul);
+
+        let div = document.createElement("div");
+        div.classList.add("post-btn-box");
+        let button = document.createElement("button");
+        button.innerText = "post of current user";
+        button.classList.add("post-btn");
+        button.id = `${user.id}`;
+        div.appendChild(button);
+
+        button.addEventListener("click", () => {
+          localStorage.setItem("user-id", button.id);
+          postTitle(userPostsUrl);
+        });
+
+        document.body.append(userContainer, div);
+      }
+
+      function postTitle(postUrl) {
+        fetch(userPostsUrl)
+          .then((response) => response.json())
+          .then((userPost) => {
+            let ul = document.createElement("ul");
+
+            ul.classList.add("post-title");
+            ul.innerHTML = "";
+            for (const post of userPost) {
+              let div = document.createElement("div");
+              div.classList.add("post-title-wraper");
+              let li = document.createElement("li");
+              li.innerText += ` Post Title:  ${post.title} `;
+
+              ul.appendChild(div);
+
+              let postDetailBtn = document.createElement("button");
+              postDetailBtn.classList.add("postDetails-btn");
+              postDetailBtn.innerText = "post details";
+              postDetailBtn.id = `${post.id}`;
+
+              div.append(li, postDetailBtn);
+
+              postDetailBtn.addEventListener("click", () => {
+                location.href = "post-details.html";
+                localStorage.setItem("post-id", postDetailBtn.id);
+              });
+            }
+            document.body.appendChild(ul);
+          });
+      }
     </script>
-
-    <!-- <script src="script.js"></script> -->
   </body>
 </html>
+
