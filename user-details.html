@@ -20,6 +20,8 @@
       let userUrl = "https://jsonplaceholder.typicode.com/users" + `/${userId}`;
       let userPostsUrl = `https://jsonplaceholder.typicode.com/users/${userId}/posts`;
 
+      let ulPostTitle = document.createElement("ul");
+
       fetch(userUrl)
         .then((response) => response.json())
         .then((user) => {
@@ -53,7 +55,9 @@
 
         button.addEventListener("click", () => {
           localStorage.setItem("user-id", button.id);
-          postTitle(userPostsUrl);
+          if (ulPostTitle.innerHTML === "") {
+            postTitle(userPostsUrl);
+          }
         });
 
         document.body.append(userContainer, div);
@@ -63,17 +67,15 @@
         fetch(userPostsUrl)
           .then((response) => response.json())
           .then((userPost) => {
-            let ul = document.createElement("ul");
-
-            ul.classList.add("post-title");
-            ul.innerHTML = "";
+            ulPostTitle.classList.add("post-title");
+            ulPostTitle.innerHTML = "";
             for (const post of userPost) {
               let div = document.createElement("div");
               div.classList.add("post-title-wraper");
               let li = document.createElement("li");
               li.innerText += ` Post Title:  ${post.title} `;
 
-              ul.appendChild(div);
+              ulPostTitle.appendChild(div);
 
               let postDetailBtn = document.createElement("button");
               postDetailBtn.classList.add("postDetails-btn");
@@ -87,10 +89,9 @@
                 localStorage.setItem("post-id", postDetailBtn.id);
               });
             }
-            document.body.appendChild(ul);
+            document.body.appendChild(ulPostTitle);
           });
       }
     </script>
   </body>
 </html>
-
