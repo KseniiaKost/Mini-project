@@ -20,6 +20,12 @@ body {
   margin-top: 10px;
 }
 
+.userElement {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
 .userDetails-btn:hover {
   background-color: rgb(247, 244, 96);
 }
@@ -127,7 +133,7 @@ body {
 
 .comments-btn {
   height: 40px;
-  width: 200px;
+  width: 30vw;
   background-color: rgb(247, 223, 223);
   border: none;
   cursor: pointer;
@@ -142,7 +148,6 @@ body {
 
 .postDetails-wraper {
   margin: 40px;
-
   width: 50vw;
   font-size: 20px;
   border: 1px solid black;
@@ -175,5 +180,39 @@ body {
 @media screen and (max-width: 900px) {
   .content {
     width: 90vw;
+    height: 90vh;
+    border: none;
+  }
+  .userDetails-btn {
+    width: 20vw;
+  }
+
+  .userInfo li {
+    font-size: 15px;
+  }
+
+  .post-title,
+  .post-comments {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .content,
+  .userInfo li,
+  .post-title-wraper,
+  .postDetails-wraper,
+  .post-comments {
+    font-size: 40px;
+  }
+
+  .userDetails-btn,
+  .post-btn,
+  .postDetails-btn,
+  .comments-btn {
+    font-size: 30px;
+    height: 5vh;
   }
 }
